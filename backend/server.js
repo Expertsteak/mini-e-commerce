@@ -31,8 +31,13 @@ app.get("/api/profile", authMiddleware, (req, res) => {
   });
 });
 
+// const PORT = process.env.PORT || 7000;
+
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
 const PORT = process.env.PORT || 7000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`server listening on ${PORT} port`);
 });
