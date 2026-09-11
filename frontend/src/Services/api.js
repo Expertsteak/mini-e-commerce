@@ -1,3 +1,3 @@
-const API_URL = "http://localhost:7000/api";
+const API_URL = "https://mini-e-commerce-6cxm.onrender.com/api";
 
 export default API_URL;
