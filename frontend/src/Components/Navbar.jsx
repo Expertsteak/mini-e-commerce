@@ -11,7 +11,6 @@ const isAdmin = role === "admin";
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
 
     alert("Logged out successfully");
     navigate("/login");

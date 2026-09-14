@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API_URL from "../Services/api";
+import apiFetch from "../Services/apiFetch";
 import "./Cart.css";
 
 function Cart() {
@@ -7,13 +7,7 @@ function Cart() {
 
   const fetchCart = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
-
-      const response = await fetch(`${API_URL}/cart`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      const response = await apiFetch("/cart");
 
       const data = await response.json();
 
@@ -35,16 +29,10 @@ function Cart() {
 
   const handleRemove = async (productId) => {
     try {
-      // ✅ Changed token to accessToken
-      const token = localStorage.getItem("accessToken");
-
-      const response = await fetch(
-        `${API_URL}/cart/${productId}`,
+      const response = await apiFetch(
+        `/cart/${productId}`,
         {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          method: "DELETE"
         }
       );
 
@@ -160,3 +148,4 @@ function Cart() {
 }
 
 export default Cart;
+

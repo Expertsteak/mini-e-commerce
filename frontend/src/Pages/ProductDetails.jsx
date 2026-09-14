@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams,useNavigate } from "react-router-dom";
-import API_URL from "../Services/api";
+import apiFetch from "../Services/apiFetch";
 import "./ProductDetails.css";
 
 function ProductDetails() {
@@ -11,7 +11,7 @@ function ProductDetails() {
 
   const fetchProduct = async () => {
     try {
-      const response = await fetch(`${API_URL}/products/${id}`);
+      const response = await apiFetch(`/products/${id}`);
 
       const data = await response.json();
 
