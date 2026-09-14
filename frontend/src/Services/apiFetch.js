@@ -23,13 +23,24 @@ const apiFetch = async (endpoint, options = {}) => {
       }
     );
 
+    // Refresh token invalid / expired
     if (!refreshResponse.ok) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("role");
 
       window.location.href = "/login";
 
-      return;
+      return new Response(
+        JSON.stringify({
+          message: "Session expired. Please login again."
+        }),
+        {
+          status: 401,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
     }
 
     const refreshData = await refreshResponse.json();
@@ -42,7 +53,7 @@ const apiFetch = async (endpoint, options = {}) => {
 
     accessToken = refreshData.accessToken;
 
-    // Retry original request
+    // Retry original request with new token
     response = await fetch(`${API_URL}${endpoint}`, {
       ...options,
       headers: {

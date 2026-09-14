@@ -135,11 +135,11 @@ export const login = async (req, res) => {
       }
      );
 
-     res.cookie("refreshToken", refreshToken, {
-     httpOnly: true,
-     secure: false,
-     sameSite: "lax",
-     maxAge: 7 * 24 * 60 * 60 * 1000
+     res.cookie("Refresh_Token", refreshToken, {
+      httpOnly: true,
+      sameSite: "none",
+     secure: true,
+     maxAge: 3 * 24 * 60 * 60 * 1000
      });
 
     res.status(200).json({
@@ -425,11 +425,11 @@ export const googleLogin = async (req, res) => {
       }
        );
 
-      res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-     secure: false,
-     sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      res.cookie("Refresh_Token", refreshToken, {
+     httpOnly: true,
+     sameSite: "none",
+     secure: true,
+     maxAge: 3 * 24 * 60 * 60 * 1000
      });
 
        res.status(200).json({

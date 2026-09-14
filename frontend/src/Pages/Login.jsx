@@ -35,15 +35,24 @@ function Login() {
         return;
       }
 
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("role", data.user.role);
+      // Save login information
+      localStorage.setItem(
+        "accessToken",
+        data.accessToken
+      );
+
+      localStorage.setItem(
+        "role",
+        data.user.role
+      );
 
       alert("Login successful!");
 
+      // Reload page so Navbar updates
       if (data.user.role === "admin") {
-        navigate("/admin/products");
+        window.location.href = "/admin/products";
       } else {
-        navigate("/products");
+        window.location.href = "/products";
       }
 
     } catch (error) {
@@ -136,6 +145,7 @@ function Login() {
             <label>Email Address</label>
 
             <div className="input-wrapper">
+
               <span>✉</span>
 
               <input
@@ -147,6 +157,7 @@ function Login() {
                 }
                 required
               />
+
             </div>
 
           </div>
@@ -157,6 +168,7 @@ function Login() {
             <label>Password</label>
 
             <div className="input-wrapper">
+
               <span>🔒</span>
 
               <input
@@ -168,6 +180,7 @@ function Login() {
                 }
                 required
               />
+
             </div>
 
           </div>
@@ -186,7 +199,7 @@ function Login() {
 
           </div>
 
-          {/* Login */}
+          {/* Login Button */}
           <button
             type="submit"
             className="login-btn"
@@ -211,15 +224,20 @@ function Login() {
 
           <GoogleLogin
             onSuccess={async (credentialResponse) => {
+
               try {
+
                 const response = await fetch(
                   `${API_URL}/auth/google`,
                   {
                     method: "POST",
+
                     headers: {
                       "Content-Type": "application/json"
                     },
+
                     credentials: "include",
+
                     body: JSON.stringify({
                       credential:
                         credentialResponse.credential,
@@ -228,13 +246,15 @@ function Login() {
                   }
                 );
 
-                const data = await response.json();
+                const data =
+                  await response.json();
 
                 if (!response.ok) {
                   alert(data.message);
                   return;
                 }
 
+                // Save Google login information
                 localStorage.setItem(
                   "accessToken",
                   data.accessToken
@@ -245,31 +265,48 @@ function Login() {
                   data.user.role
                 );
 
-                alert("Google login successful!");
+                alert(
+                  "Google login successful!"
+                );
 
+                // Reload page so Navbar updates
                 if (data.user.role === "admin") {
-                  navigate("/admin/products");
+                  window.location.href =
+                    "/admin/products";
                 } else {
-                  navigate("/products");
+                  window.location.href =
+                    "/products";
                 }
 
               } catch (error) {
+
                 console.log(
                   "Google login error:",
                   error
                 );
+
               }
+
             }}
 
             onError={() => {
-              console.log("Google Login Failed");
+              console.log(
+                "Google Login Failed"
+              );
             }}
+
+            theme="outline"
+            size="large"
+            text="continue_with"
+            shape="rectangular"
+            width="320"
           />
 
         </div>
 
         {/* Signup */}
         <p className="signup-text">
+
           Don't have an account?{" "}
 
           <button
@@ -279,6 +316,7 @@ function Login() {
           >
             Sign Up
           </button>
+
         </p>
 
       </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API_URL from "../Services/api";
+import apiFetch from "../Services/apiFetch";
 import "./AdminProducts.css";
 
 function AdminProducts() {
@@ -15,13 +15,17 @@ function AdminProducts() {
 
   const [editingId, setEditingId] = useState(null);
 
-
   // GET PRODUCTS
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${API_URL}/products`);
+      const response = await apiFetch("/products");
 
       const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message);
+        return;
+      }
 
       setProducts(data);
 
@@ -30,11 +34,9 @@ function AdminProducts() {
     }
   };
 
-
   useEffect(() => {
     fetchProducts();
   }, []);
-
 
   // INPUT CHANGE
   const handleChange = (e) => {
@@ -44,26 +46,22 @@ function AdminProducts() {
     });
   };
 
-
   // CREATE / UPDATE
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem("accessToken");
-
       const url = editingId
-        ? `${API_URL}/products/${editingId}`
-        : `${API_URL}/products`;
+        ? `/products/${editingId}`
+        : "/products";
 
       const method = editingId ? "PUT" : "POST";
 
-      const response = await fetch(url, {
+      const response = await apiFetch(url, {
         method,
 
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          "Content-Type": "application/json"
         },
 
         body: JSON.stringify({
@@ -94,7 +92,6 @@ function AdminProducts() {
     }
   };
 
-
   // RESET FORM
   const resetForm = () => {
     setFormData({
@@ -107,7 +104,6 @@ function AdminProducts() {
 
     setEditingId(null);
   };
-
 
   // EDIT
   const handleEdit = (product) => {
@@ -127,20 +123,13 @@ function AdminProducts() {
     });
   };
 
-
   // DELETE
   const handleDelete = async (id) => {
     try {
-      const token = localStorage.getItem("accessToken");
-
-      const response = await fetch(
-        `${API_URL}/products/${id}`,
+      const response = await apiFetch(
+        `/products/${id}`,
         {
-          method: "DELETE",
-
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          method: "DELETE"
         }
       );
 
@@ -160,7 +149,6 @@ function AdminProducts() {
     }
   };
 
-
   return (
     <div className="admin-page">
 
@@ -175,13 +163,14 @@ function AdminProducts() {
         </p>
       </div>
 
-
       {/* CREATE / EDIT FORM */}
       <div className="admin-form-card">
 
         <div className="form-heading">
           <span className="form-label">
-            {editingId ? "UPDATE PRODUCT" : "PRODUCT MANAGEMENT"}
+            {editingId
+              ? "UPDATE PRODUCT"
+              : "PRODUCT MANAGEMENT"}
           </span>
 
           <h2>
@@ -196,7 +185,6 @@ function AdminProducts() {
               : "Enter the details to add a new product."}
           </p>
         </div>
-
 
         <form onSubmit={handleSubmit}>
 
@@ -213,7 +201,6 @@ function AdminProducts() {
             />
           </div>
 
-
           <div className="form-group">
             <label>Price</label>
 
@@ -227,7 +214,6 @@ function AdminProducts() {
               required
             />
           </div>
-
 
           <div className="form-group">
             <label>Category</label>
@@ -284,7 +270,6 @@ function AdminProducts() {
             </select>
           </div>
 
-
           <div className="form-group">
             <label>Image URL</label>
 
@@ -298,7 +283,6 @@ function AdminProducts() {
             />
           </div>
 
-
           <div className="form-group full-width">
             <label>Description</label>
 
@@ -311,7 +295,6 @@ function AdminProducts() {
             />
           </div>
 
-
           <div className="form-buttons">
 
             <button
@@ -322,7 +305,6 @@ function AdminProducts() {
                 ? "Update Product"
                 : "Create Product"}
             </button>
-
 
             {editingId && (
               <button
@@ -339,7 +321,6 @@ function AdminProducts() {
         </form>
 
       </div>
-
 
       {/* PRODUCT LIST */}
       <div className="admin-products">
@@ -360,7 +341,6 @@ function AdminProducts() {
           </p>
 
         </div>
-
 
         <div className="admin-product-grid">
 
@@ -384,7 +364,6 @@ function AdminProducts() {
 
               </div>
 
-
               <div className="admin-product-info">
 
                 <h3>
@@ -398,7 +377,6 @@ function AdminProducts() {
                 <p className="admin-description">
                   {product.description}
                 </p>
-
 
                 <div className="admin-actions">
 

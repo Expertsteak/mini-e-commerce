@@ -1,23 +1,45 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "./Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("accessToken");
-  const role = localStorage.getItem("role");
+  const [token, setToken] = useState(
+    localStorage.getItem("accessToken")
+  );
+
+  const [role, setRole] = useState(
+    localStorage.getItem("role")
+  );
 
   const isAdmin = role === "admin";
 
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setToken(localStorage.getItem("accessToken"));
+      setRole(localStorage.getItem("role"));
+    };
+
+    window.addEventListener(
+      "storage",
+      handleStorageChange
+    );
+
+    return () => {
+      window.removeEventListener(
+        "storage",
+        handleStorageChange
+      );
+    };
+  }, []);
+
   const handleLogout = () => {
-    // localStorage.removeItem("accessToken");
-    // localStorage.removeItem("role");
-    const token = localStorage.getItem("accessToken");
-const role = localStorage.getItem("role");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("role");
 
-console.log("NAVBAR TOKEN:", token);
-console.log("NAVBAR ROLE:", role);
-
+    setToken(null);
+    setRole(null);
 
     alert("Logged out successfully");
     navigate("/login");
@@ -41,14 +63,12 @@ console.log("NAVBAR ROLE:", role);
         <Link to="/products">
           Products
         </Link>
-      <Link to="/cart" className="cart-link">
-  🛒 Cart
-</Link>
-        {/* {token && (
+
+        {token && (
           <Link to="/cart" className="cart-link">
             🛒 Cart
           </Link>
-        )} */}
+        )}
 
         {isAdmin && (
           <Link to="/admin/products">
@@ -87,4 +107,3 @@ console.log("NAVBAR ROLE:", role);
 }
 
 export default Navbar;
-
