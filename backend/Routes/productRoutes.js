@@ -18,20 +18,53 @@ router.post("/import", async (req, res) => {
 
     const data = await response.json();
 
+    // DummyJSON category → Our category
+    const categoryMap = {
+      smartphones: "Electronics",
+      laptops: "Electronics",
+      tablets: "Electronics",
+
+      "mens-shirts": "Clothing",
+      "womens-dresses": "Clothing",
+      tops: "Clothing",
+
+      "mens-shoes": "Shoes",
+      "womens-shoes": "Shoes",
+
+      groceries: "Groceries",
+
+      "home-decoration": "Home Decor",
+
+      beauty: "Makeup",
+
+      furniture: "Furniture",
+
+      fragrances: "Perfumes",
+
+      "kitchen-accessories": "Kitchen Appliances",
+
+      "mens-watches": "Watches",
+      "womens-watches": "Watches"
+    };
+
     const products = data.products.map((product) => ({
       name: product.title,
       price: product.price,
-      category: product.category,
+      category:
+        categoryMap[product.category] || "Home Decor",
       image: product.thumbnail,
       description: product.description
     }));
 
+    // Delete existing products
+    await Product.deleteMany({});
+
+    // Insert newly categorized products
     const insertedProducts = await Product.insertMany(products);
 
     res.status(201).json({
-      message: "Products imported successfully",
-      count: insertedProducts.length,
-      products: insertedProducts
+      message: "Products imported and categorized successfully",
+      count: insertedProducts.length
     });
 
   } catch (error) {

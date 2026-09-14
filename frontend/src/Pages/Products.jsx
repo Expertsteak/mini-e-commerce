@@ -54,15 +54,25 @@ function Products() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        >
-          <option value="">All Categories</option>
-          <option value="electronics">Electronics</option>
-          <option value="clothing">Clothing</option>
-          <option value="shoes">Shoes</option>
-        </select>
+        
+<select
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+>
+  <option value="">All Categories</option>
+  <option value="Electronics">Electronics</option>
+  <option value="Clothing">Clothing</option>
+  <option value="Shoes">Shoes</option>
+  <option value="Groceries">Groceries</option>
+  <option value="Home Decor">Home Decor</option>
+  <option value="Makeup">Makeup</option>
+  <option value="Furniture">Furniture</option>
+  <option value="Perfumes">Perfumes</option>
+  <option value="Kitchen Appliances">Kitchen Appliances</option>
+  <option value="Watches">Watches</option>
+</select>
+
+
       </div>
 
       <div className="product-grid">
