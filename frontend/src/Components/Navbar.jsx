@@ -10,8 +10,14 @@ function Navbar() {
   const isAdmin = role === "admin";
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("role");
+    // localStorage.removeItem("accessToken");
+    // localStorage.removeItem("role");
+    const token = localStorage.getItem("accessToken");
+const role = localStorage.getItem("role");
+
+console.log("NAVBAR TOKEN:", token);
+console.log("NAVBAR ROLE:", role);
+
 
     alert("Logged out successfully");
     navigate("/login");
@@ -35,12 +41,14 @@ function Navbar() {
         <Link to="/products">
           Products
         </Link>
-
-        {token && (
+      <Link to="/cart" className="cart-link">
+  🛒 Cart
+</Link>
+        {/* {token && (
           <Link to="/cart" className="cart-link">
             🛒 Cart
           </Link>
-        )}
+        )} */}
 
         {isAdmin && (
           <Link to="/admin/products">
