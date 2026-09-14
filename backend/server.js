@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import connectDB from "./Config/db.js";
+import cookieParser from "cookie-parser";
 
 import authRoutes from "./Routes/authRoutes.js";
 import productRoutes from "./Routes/productRoutes.js";
@@ -11,8 +12,14 @@ import authMiddleware from "./Middleware/authMiddleware.js";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://mini-e-commerce-1.onrender.com",
+    credentials: true
+  })
+);
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);

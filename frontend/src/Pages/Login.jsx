@@ -20,6 +20,7 @@ function Login() {
         headers: {
           "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify({
           email,
           password,
@@ -35,7 +36,6 @@ function Login() {
       }
 
       localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
       localStorage.setItem("role", data.user.role);
 
       alert("Login successful!");
@@ -141,52 +141,47 @@ function Login() {
         {/* Google Login */}
         <div className="google-login">
           <GoogleLogin
-            onSuccess={async (credentialResponse) => {
-              try {
-                const response = await fetch(`${API_URL}/auth/google`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({
-                    credential: credentialResponse.credential
-                  })
-                });
+  onSuccess={async (credentialResponse) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/google`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          credential: credentialResponse.credential,
+          loginAs
+        })
+      });
 
-                const data = await response.json();
+      const data = await response.json();
 
-                if (!response.ok) {
-                  alert(data.message);
-                  return;
-                }
+      if (!response.ok) {
+        alert(data.message);
+        return;
+      }
 
-                localStorage.setItem(
-                  "accessToken",
-                  data.accessToken
-                );
+      localStorage.setItem("accessToken",data.accessToken);
+      localStorage.setItem("role", data.user.role);
 
-                localStorage.setItem(
-                  "refreshToken",
-                  data.refreshToken
-                );
+      alert("Google login successful!");
 
-                alert("Google login successful!");
+      if (data.user.role === "admin") {
+        navigate("/admin/products");
+      } else {
+        navigate("/products");
+      }
 
-                if (data.user.role === "admin") {
-                  navigate("/admin/products");
-                } else {
-                  navigate("/products");
-                }
+    } catch (error) {
+      console.log("Google login error:", error);
+    }
+  }}
 
-              } catch (error) {
-                console.log("Google login error:", error);
-              }
-            }}
-
-            onError={() => {
-              console.log("Google Login Failed");
-            }}
-          />
+  onError={() => {
+    console.log("Google Login Failed");
+  }}
+/>
         </div>
 
         <p className="signup-text">

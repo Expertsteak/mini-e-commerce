@@ -1,6 +1,7 @@
+
 import { useEffect, useState } from "react";
 import ProductCard from "../Components/ProductCard";
-import API_URL from "../Services/api";
+import apiFetch from "../Services/apiFetch";
 import "./Products.css";
 
 function Products() {
@@ -10,7 +11,7 @@ function Products() {
 
   const fetchProducts = async () => {
     try {
-      let url = `${API_URL}/products`;
+      let url = "/products";
 
       const params = new URLSearchParams();
 
@@ -22,11 +23,11 @@ function Products() {
         params.append("category", category);
       }
 
-      if (params.toString()) {
-        url += `?${params.toString()}`;
-      }
+     if (params.toString()) {
+  url += `?${params.toString()}`;
+}
 
-      const response = await fetch(url);
+      const response = await apiFetch(url);
 
       const data = await response.json();
 
@@ -42,42 +43,43 @@ function Products() {
   }, [search, category]);
 
   return (
-  <div className="products-page">
-    <h1>All Products</h1>
+    <div className="products-page">
+      <h1>All Products</h1>
 
-    <div className="filters">
-      <input
-        type="text"
-        placeholder="Search products..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <div className="filters">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-      <select
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      >
-        <option value="">All Categories</option>
-        <option value="electronics">Electronics</option>
-        <option value="clothing">Clothing</option>
-        <option value="shoes">Shoes</option>
-      </select>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="">All Categories</option>
+          <option value="electronics">Electronics</option>
+          <option value="clothing">Clothing</option>
+          <option value="shoes">Shoes</option>
+        </select>
+      </div>
+
+      <div className="product-grid">
+        {products.length === 0 ? (
+          <p>No products found</p>
+        ) : (
+          products.map((product) => (
+            <ProductCard
+              key={product._id}
+              product={product}
+            />
+          ))
+        )}
+      </div>
     </div>
-
-    <div className="product-grid">
-      {products.length === 0 ? (
-        <p>No products found</p>
-      ) : (
-        products.map((product) => (
-          <ProductCard
-            key={product._id}
-            product={product}
-          />
-        ))
-      )}
-    </div>
-  </div>
-);
+  );
 }
 
 export default Products;
+

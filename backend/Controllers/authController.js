@@ -5,22 +5,35 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import { OAuth2Client } from "google-auth-library";
 
+// Google client
 const googleClient = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID
 );
+
+// Email transporter
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+
+// =========================
+// SIGNUP
+// =========================
 
 export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Check required fields
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "All fields are required"
       });
     }
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -29,10 +42,8 @@ export const signup = async (req, res) => {
       });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
     const user = await User.create({
       name,
       email,
@@ -56,6 +67,11 @@ export const signup = async (req, res) => {
   }
 };
 
+
+// =========================
+// LOGIN
+// =========================
+
 export const login = async (req, res) => {
   try {
     const { email, password, loginAs } = req.body;
@@ -74,7 +90,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // Check selected login type with database role
     if (user.role !== loginAs) {
       return res.status(403).json({
         message: `This account is not registered as ${loginAs}`
@@ -118,7 +133,14 @@ export const login = async (req, res) => {
       {
         expiresIn: "7d"
       }
-    );
+     );
+
+     res.cookie("refreshToken", refreshToken, {
+     httpOnly: true,
+     secure: false,
+     sameSite: "lax",
+     maxAge: 7 * 24 * 60 * 60 * 1000
+     });
 
     res.status(200).json({
       message: "Login successful",
@@ -144,9 +166,14 @@ export const login = async (req, res) => {
   }
 };
 
+
+// =========================
+// REFRESH ACCESS TOKEN
+// =========================
+
 export const refreshAccessToken = (req, res) => {
   try {
-    const { refreshToken } = req.body;
+    const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
       return res.status(401).json({
@@ -180,6 +207,11 @@ export const refreshAccessToken = (req, res) => {
     });
   }
 };
+
+// =========================
+// FORGOT PASSWORD
+// =========================
+
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -192,60 +224,74 @@ export const forgotPassword = async (req, res) => {
       });
     }
 
-    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetToken = crypto
+      .randomBytes(32)
+      .toString("hex");
 
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
+
+    user.resetPasswordExpires =
+      Date.now() + 15 * 60 * 1000;
 
     await user.save();
 
-    // res.status(200).json({
-    //   message: "Password reset token generated",
-    //   resetToken
-    // });
     const resetLink =
-  `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+      `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-await transporter.sendMail({
-  from: process.env.EMAIL_USER,
-  to: email,
-  subject: "Reset Your Password",
-  html: `
-    <h2>Password Reset</h2>
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Reset Your Password",
+      html: `
+        <h2>Password Reset</h2>
 
-    <p>You requested to reset your password.</p>
+        <p>You requested to reset your password.</p>
 
-    <p>Click the button below to create a new password:</p>
+        <p>Click the button below to create a new password:</p>
 
-    <a href="${resetLink}"
-      style="display:inline-block;
-        padding:10px 20px;
-        background:#000;
-        color:#fff;
-        text-decoration:none;
-        border-radius:5px;">
-      Reset Password
-    </a>
+        <a
+          href="${resetLink}"
+          style="
+            display:inline-block;
+            padding:10px 20px;
+            background:#000;
+            color:#fff;
+            text-decoration:none;
+            border-radius:5px;
+          "
+        >
+          Reset Password
+        </a>
 
-    <p>This link will expire in 15 minutes.</p>
+        <p>This link will expire in 15 minutes.</p>
 
-    <p>If you didn't request this, you can ignore this email.</p>
-  `
-});
+        <p>
+          If you didn't request this, you can ignore this email.
+        </p>
+      `
+    });
 
-res.status(200).json({
-  message: "Password reset link sent to your email"
-});
+    res.status(200).json({
+      message: "Password reset link sent to your email"
+    });
 
   } catch (error) {
-  console.log("FORGOT PASSWORD ERROR:", error);
+    console.log(
+      "FORGOT PASSWORD ERROR:",
+      error
+    );
 
-  res.status(500).json({
-    message: "Failed to process request",
-    error: error.message
-  });
-}
-}
+    res.status(500).json({
+      message: "Failed to process request",
+      error: error.message
+    });
+  }
+};
+
+
+// =========================
+// RESET PASSWORD
+// =========================
 
 export const resetPassword = async (req, res) => {
   try {
@@ -260,7 +306,9 @@ export const resetPassword = async (req, res) => {
 
     const user = await User.findOne({
       resetPasswordToken: token,
-      resetPasswordExpires: { $gt: Date.now() }
+      resetPasswordExpires: {
+        $gt: Date.now()
+      }
     });
 
     if (!user) {
@@ -269,9 +317,11 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword =
+      await bcrypt.hash(password, 10);
 
     user.password = hashedPassword;
+
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 
@@ -288,15 +338,11 @@ export const resetPassword = async (req, res) => {
     });
   }
 };
-// console.log("EMAIL USER:", process.env.EMAIL_USER);
-// console.log("EMAIL PASS EXISTS:", !!process.env.EMAIL_PASS);
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+
+
+// =========================
+// GOOGLE LOGIN
+// =========================
 
 export const googleLogin = async (req, res) => {
   try {
@@ -314,25 +360,37 @@ export const googleLogin = async (req, res) => {
       });
     }
 
-    const ticket = await googleClient.verifyIdToken({
-      idToken: credential,
-      audience: process.env.GOOGLE_CLIENT_ID
-    });
+    const ticket =
+      await googleClient.verifyIdToken({
+        idToken: credential,
+        audience: process.env.GOOGLE_CLIENT_ID
+      });
 
-    const payload = ticket.getPayload();
+    const payload =
+      ticket.getPayload();
 
+    const googleId = payload.sub;
     const email = payload.email;
     const name = payload.name;
 
-    let user = await User.findOne({ email });
+    let user = await User.findOne({
+      email
+    });
 
     // Existing account
     if (user) {
 
       if (user.role !== loginAs) {
         return res.status(403).json({
-          message: `This account is not registered as ${loginAs}`
+          message:
+            `This account is not registered as ${loginAs}`
         });
+      }
+
+      // Save Google ID if it doesn't exist
+      if (!user.googleId) {
+        user.googleId = googleId;
+        await user.save();
       }
 
     } else {
@@ -341,6 +399,7 @@ export const googleLogin = async (req, res) => {
       user = await User.create({
         name,
         email,
+        googleId,
         role: loginAs
       });
     }
@@ -352,37 +411,44 @@ export const googleLogin = async (req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "2h"
+        expiresIn: "15m"
       }
     );
 
     const refreshToken = jwt.sign(
       {
         userId: user._id,
-        role: user.role
       },
       process.env.JWT_REFRESH_SECRET,
       {
         expiresIn: "7d"
       }
-    );
+       );
 
-    res.status(200).json({
-      message: "Google login successful",
+      res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+     secure: false,
+     sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000
+     });
 
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-      },
+       res.status(200).json({
+       message: "Google login successful",
 
-      accessToken,
-      refreshToken
-    });
+     user: {
+     id: user._id,
+     name: user.name,
+     email: user.email,
+     role: user.role
+     },
+     accessToken
+     });
 
   } catch (error) {
-    console.log("GOOGLE LOGIN ERROR:", error);
+    console.log(
+      "GOOGLE LOGIN ERROR:",
+      error
+    );
 
     res.status(500).json({
       message: "Google login failed",
