@@ -9,14 +9,27 @@ function Footer() {
 
       <div className="footer-container">
 
+        {/* BRAND */}
         <div className="footer-brand">
-          <h2><span>Mini</span> Store 🛍️</h2>
+          <h2>
+            <span>Mini</span> Store 🛍️
+          </h2>
+
           <p>
             Your simple and reliable destination
             for quality products at great prices.
           </p>
+
+          <button
+            className="footer-shop-btn"
+            onClick={() => navigate("/products")}
+          >
+            Start Shopping →
+          </button>
         </div>
 
+
+        {/* QUICK LINKS */}
         <div className="footer-links">
           <h3>Quick Links</h3>
 
@@ -37,6 +50,8 @@ function Footer() {
           </button>
         </div>
 
+
+        {/* CUSTOMER */}
         <div className="footer-links">
           <h3>Customer</h3>
 
@@ -49,6 +64,8 @@ function Footer() {
           </button>
         </div>
 
+
+        {/* CONTACT */}
         <div className="footer-contact">
           <h3>Contact</h3>
 
@@ -59,9 +76,16 @@ function Footer() {
 
       </div>
 
+
+      {/* BOTTOM */}
       <div className="footer-bottom">
-        <p>© 2026 Mini Store. All rights reserved.</p>
-        <p>Built with ❤️ for a better shopping experience.</p>
+        <p>
+          © 2026 Mini Store. All rights reserved.
+        </p>
+
+        <p>
+          Built with ❤️ for a better shopping experience.
+        </p>
       </div>
 
     </footer>
