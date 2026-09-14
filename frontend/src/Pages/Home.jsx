@@ -60,24 +60,26 @@ function Home() {
 
           </div>
 
-          <div className="hero-stats">
+         <div className="hero-stats">
+          
+         <div>
+       <strong>{products.length}</strong>
+       <span>Products</span>
+       </div>
 
-            <div>
-              <strong>100+</strong>
-              <span>Products</span>
-            </div>
+       <div>
+       <strong>
+        {[...new Set(products.map((product) => product.category))].length}
+       </strong>
+        <span>Categories</span>
+       </div>
 
-            <div>
-              <strong>10</strong>
-              <span>Categories</span>
-            </div>
+       <div>
+       <strong>24/7</strong>
+       <span>Shopping</span>
+       </div>
 
-            <div>
-              <strong>24/7</strong>
-              <span>Shopping</span>
-            </div>
-
-          </div>
+       </div>
 
         </div>
 

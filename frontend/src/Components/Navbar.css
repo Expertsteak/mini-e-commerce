@@ -12,12 +12,12 @@
   align-items: center;
   justify-content: space-between;
 
-  background: rgba(15, 17, 21, 0.96);
+  background: rgba(7, 21, 34, 0.97);
 
-  border-bottom: 1px solid #292d35;
+  border-bottom: 1px solid rgba(212, 167, 44, 0.18);
 
   box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.22);
+    0 8px 30px rgba(7, 21, 34, 0.18);
 
   position: sticky;
   top: 0;
@@ -38,10 +38,9 @@
   text-decoration: none;
 
   font-size: 25px;
-
   font-weight: 850;
 
-  color: #f5f5f5;
+  color: #ffffff;
 
   letter-spacing: -0.8px;
 
@@ -49,13 +48,15 @@
 }
 
 .logo span {
-  color: #ff6b35;
+  color: #d4a72c;
 }
 
 .logo:hover {
   transform: translateY(-1px);
+}
 
-  color: #ffffff;
+.logo:hover span {
+  color: #e5bc4a;
 }
 
 
@@ -76,7 +77,7 @@
 
   text-decoration: none;
 
-  color: #a7a7a7;
+  color: #b9c4ce;
 
   font-size: 14px;
 
@@ -86,10 +87,12 @@
 }
 
 
-/* Hover */
+/* =========================
+   LINK HOVER
+========================= */
 
 .nav-links a:hover {
-  color: #ff6b35;
+  color: #e5bc4a;
 }
 
 
@@ -110,7 +113,7 @@
 
   border-radius: 10px;
 
-  background: #ff6b35;
+  background: #d4a72c;
 
   transition: width 0.25s ease;
 }
@@ -133,7 +136,7 @@
 }
 
 .cart-link:hover {
-  color: #ff6b35;
+  color: #e5bc4a;
 }
 
 
@@ -142,7 +145,11 @@
 ========================= */
 
 .login-link {
-  color: #ff6b35 !important;
+  color: #d4a72c !important;
+}
+
+.login-link:hover {
+  color: #e5bc4a !important;
 }
 
 
@@ -155,24 +162,30 @@
 
   border-radius: 8px;
 
-  background: #ff6b35;
+  background: #d4a72c;
 
-  color: #ffffff !important;
+  color: #071522 !important;
 
-  border: 1px solid #ff6b35;
+  border: 1px solid #d4a72c;
 
   transition: all 0.25s ease;
 }
 
 .signup-link:hover {
-  background: #ff855f;
+  background: #e5bc4a;
 
-  border-color: #ff855f;
+  border-color: #e5bc4a;
+
+  color: #071522 !important;
 
   transform: translateY(-2px);
 
   box-shadow:
-    0 8px 20px rgba(255, 107, 53, 0.25);
+    0 8px 20px rgba(212, 167, 44, 0.22);
+}
+
+.signup-link::after {
+  display: none;
 }
 
 
@@ -181,15 +194,15 @@
 ========================= */
 
 .logout-btn {
-  border: 1px solid #343943;
+  border: 1px solid rgba(212, 167, 44, 0.35);
 
   padding: 10px 19px;
 
   border-radius: 8px;
 
-  background: #181b21;
+  background: rgba(255, 255, 255, 0.05);
 
-  color: #e5e5e5;
+  color: #ffffff;
 
   font-size: 14px;
 
@@ -201,16 +214,16 @@
 }
 
 .logout-btn:hover {
-  background: #ff6b35;
+  background: #d4a72c;
 
-  border-color: #ff6b35;
+  border-color: #d4a72c;
 
-  color: #ffffff;
+  color: #071522;
 
   transform: translateY(-2px);
 
   box-shadow:
-    0 7px 18px rgba(255, 107, 53, 0.20);
+    0 7px 18px rgba(212, 167, 44, 0.2);
 }
 
 
@@ -235,6 +248,7 @@
   .nav-links a {
     font-size: 13px;
   }
+
 }
 
 
@@ -274,4 +288,6 @@
   .logout-btn {
     padding: 8px 14px;
   }
+
 }
+

@@ -1,102 +1,253 @@
+/* =========================
+   PRODUCT CARD
+========================= */
+
 .product-card {
-  background: #ffffff;
-  border-radius: 16px;
   overflow: hidden;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-  transition: 0.3s ease;
+
   display: flex;
   flex-direction: column;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 8px 25px rgba(11, 31, 51, 0.05);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
+
+
+/* =========================
+   CARD HOVER
+========================= */
 
 .product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 25px rgba(79, 70, 229, 0.15);
+  transform: translateY(-7px);
+
+  border-color: rgba(212, 167, 44, 0.45);
+
+  box-shadow:
+    0 18px 40px rgba(11, 31, 51, 0.12);
 }
 
-/* Product Image */
 
-.product-card img {
-  width: 100%;
+/* =========================
+   IMAGE CONTAINER
+========================= */
+
+.product-card-image {
   height: 230px;
-  object-fit: cover;
-  display: block;
-  background: #f3f4f6;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #f8fafc;
 }
 
-/* Product Information */
+
+/* =========================
+   PRODUCT IMAGE
+========================= */
+
+.product-card-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  padding: 18px;
+
+  box-sizing: border-box;
+
+  display: block;
+
+  transition: transform 0.35s ease;
+}
+
+.product-card:hover .product-card-image img {
+  transform: scale(1.06);
+}
+
+
+/* =========================
+   CATEGORY BADGE
+========================= */
+
+.category-badge {
+  position: absolute;
+
+  top: 13px;
+  left: 13px;
+
+  max-width: 75%;
+
+  padding: 6px 10px;
+
+  border-radius: 20px;
+
+  background: #0b1f33;
+
+  color: #ffffff;
+
+  font-size: 9px;
+
+  font-weight: 750;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================
+   PRODUCT INFO
+========================= */
 
 .product-info {
   padding: 20px;
+
   display: flex;
   flex-direction: column;
+
   flex: 1;
+
+  box-sizing: border-box;
 }
+
+
+/* =========================
+   PRODUCT NAME
+========================= */
 
 .product-info h3 {
-  margin: 0 0 8px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #111827;
+  margin: 0;
+
+  color: #0b1f33;
+
+  font-size: 17px;
+
+  font-weight: 750;
+
+  line-height: 1.4;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
 }
 
-/* Category */
 
-.category {
-  margin: 0 0 12px;
-  font-size: 13px;
-  color: #6b7280;
-  text-transform: capitalize;
-}
-
-/* Price */
+/* =========================
+   PRICE
+========================= */
 
 .price {
-  margin: 0 0 18px;
+  margin: 10px 0 18px;
+
+  color: #b58a16;
+
   font-size: 21px;
-  font-weight: 700;
-  color: #4f46e5;
+
+  font-weight: 800;
 }
 
-/* Button */
+
+/* =========================
+   BUTTON
+========================= */
 
 .product-info button {
   width: 100%;
-  padding: 11px 16px;
-  border: none;
-  border-radius: 9px;
-  background: #4f46e5;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.25s ease;
+
   margin-top: auto;
+
+  padding: 11px 16px;
+
+  border: 1px solid #0b1f33;
+
+  border-radius: 7px;
+
+  background: #0b1f33;
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
 }
 
+
+/* BUTTON HOVER */
+
 .product-info button:hover {
-  background: #4338ca;
+  background: #d4a72c;
+
+  border-color: #d4a72c;
+
+  color: #071522;
+
+  box-shadow:
+    0 7px 18px rgba(212, 167, 44, 0.18);
+
+  transform: translateY(-2px);
 }
+
+
+/* BUTTON ACTIVE */
 
 .product-info button:active {
   transform: scale(0.98);
 }
 
-/* Responsive */
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 700px) {
-  .product-card img {
+
+  .product-card-image {
     height: 210px;
   }
 
   .product-info {
-    padding: 16px;
+    padding: 17px;
   }
+
 }
 
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
 @media (max-width: 480px) {
-  .product-card img {
-    height: 200px;
+
+  .product-card-image {
+    height: 220px;
   }
 
   .product-info h3 {
