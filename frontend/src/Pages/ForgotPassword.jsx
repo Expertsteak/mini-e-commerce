@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import API_URL from "../Services/api";
 import "./ForgotPassword.css";
 
@@ -39,30 +40,49 @@ function ForgotPassword() {
 
       <div className="forgot-card">
 
+        {/* Icon */}
+        <div className="forgot-icon">
+          🔐
+        </div>
+
+        {/* Header */}
         <div className="forgot-header">
+
+          <span className="forgot-label">
+            ACCOUNT RECOVERY
+          </span>
+
           <h1>Forgot Password?</h1>
 
           <p>
-            Enter your email address and we'll send you
-            a link to reset your password.
+            No worries. Enter your email address and
+            we'll send you a link to reset your password.
           </p>
+
         </div>
 
+        {/* Form */}
         <form
           className="forgot-form"
           onSubmit={handleForgotPassword}
         >
 
           <div className="forgot-input-group">
+
             <label>Email Address</label>
 
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <div className="forgot-input-wrapper">
+              <span className="input-icon">✉</span>
+
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
           </div>
 
           <button
@@ -70,9 +90,19 @@ function ForgotPassword() {
             className="forgot-btn"
           >
             Send Reset Link
+            <span>→</span>
           </button>
 
         </form>
+
+        {/* Back to Login */}
+        <div className="back-login">
+          <span>Remember your password?</span>
+
+          <Link to="/login">
+            Back to Login
+          </Link>
+        </div>
 
       </div>
 

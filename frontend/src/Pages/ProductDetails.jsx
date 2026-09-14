@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams,useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import apiFetch from "../Services/apiFetch";
 import "./ProductDetails.css";
 
@@ -31,22 +31,22 @@ function ProductDetails() {
     fetchProduct();
   }, [id]);
 
+
   const handleAddToCart = async () => {
     try {
-      
       const token = localStorage.getItem("accessToken");
 
       if (!token) {
         alert("Please login first");
+        navigate("/login");
         return;
       }
 
-      const response = await fetch(`${API_URL}/cart`, {
+      const response = await apiFetch("/cart", {
         method: "POST",
 
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          "Content-Type": "application/json"
         },
 
         body: JSON.stringify({
@@ -62,22 +62,34 @@ function ProductDetails() {
         return;
       }
 
-      alert("Product added to cart!");
+      alert("Product added to cart! 🛒");
 
     } catch (error) {
-      console.log("Error:", error);
+      console.log("Add to cart error:", error);
     }
   };
 
+
   if (!product) {
-    return <p>Loading...</p>;
+    return (
+      <div className="details-loading">
+        <p>Loading product...</p>
+      </div>
+    );
   }
+
 
   return (
     <div className="details-page">
-     <button onClick={() => navigate(-1)} className="back-btn">
-      ← Back
-     </button>
+
+      <button
+        onClick={() => navigate(-1)}
+        className="back-btn"
+      >
+        ← Back
+      </button>
+
+
       <div className="details-card">
 
         {/* Product Image */}
@@ -87,6 +99,7 @@ function ProductDetails() {
             alt={product.name}
           />
         </div>
+
 
         {/* Product Information */}
         <div className="details-info">
@@ -98,6 +111,8 @@ function ProductDetails() {
           <h1>{product.name}</h1>
 
           <h2>₹{product.price}</h2>
+
+          <div className="details-divider"></div>
 
           <p className="details-description">
             {product.description}

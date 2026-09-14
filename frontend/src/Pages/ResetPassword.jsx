@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import "./ResetPassword.css";
 import API_URL from "../Services/api";
 
@@ -13,8 +13,8 @@ const ResetPassword = () => {
     e.preventDefault();
 
     try {
-     const response = await fetch(
-  `${API_URL}/auth/reset-password/${token}`,
+      const response = await fetch(
+        `${API_URL}/auth/reset-password/${token}`,
         {
           method: "POST",
           headers: {
@@ -39,39 +39,84 @@ const ResetPassword = () => {
 
       <div className="reset-card">
 
-        <div className="reset-header">
-          <h1>Reset Password 🔐</h1>
-
-          <p>
-            Enter a new password for your account.
-          </p>
+        {/* Icon */}
+        <div className="reset-icon">
+          🔑
         </div>
 
-        <form onSubmit={handleReset} className="reset-form">
+        {/* Header */}
+        <div className="reset-header">
+
+          <span className="reset-label">
+            ACCOUNT RECOVERY
+          </span>
+
+          <h1>Reset Password</h1>
+
+          <p>
+            Create a new password for your account
+            and get back to shopping.
+          </p>
+
+        </div>
+
+        {/* Form */}
+        <form
+          onSubmit={handleReset}
+          className="reset-form"
+        >
 
           <div className="reset-input-group">
+
             <label>New Password</label>
 
-            <input
-              type="password"
-              placeholder="Enter your new password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="reset-input-wrapper">
+
+              <span className="reset-input-icon">
+                🔒
+              </span>
+
+              <input
+                type="password"
+                placeholder="Enter your new password"
+                value={password}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
+                required
+              />
+
+            </div>
+
           </div>
 
-          <button type="submit" className="reset-btn">
+          <button
+            type="submit"
+            className="reset-btn"
+          >
             Reset Password
+            <span>→</span>
           </button>
 
         </form>
 
+        {/* Message */}
         {message && (
           <p className="reset-message">
             {message}
           </p>
         )}
+
+        {/* Login */}
+        <div className="reset-login">
+
+          <span>Remember your password?</span>
+
+          <Link to="/login">
+            Back to Login
+          </Link>
+
+        </div>
 
       </div>
 

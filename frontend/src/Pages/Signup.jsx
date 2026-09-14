@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import API_URL from "../Services/api";
 import "./Signup.css";
 
@@ -49,61 +50,110 @@ function Signup() {
 
       <div className="signup-card">
 
+        {/* Header */}
         <div className="signup-header">
-          <h1>Create Your Account ✨</h1>
-          <p>Join Mini Store and start shopping today</p>
+
+          <div className="signup-icon">
+            ✨
+          </div>
+
+          <span className="signup-label">
+            MINI STORE
+          </span>
+
+          <h1>Create Your Account</h1>
+
+          <p>
+            Join Mini Store and start your shopping
+            journey today.
+          </p>
+
         </div>
 
-        <form onSubmit={handleSignup} className="signup-form">
+        {/* Form */}
+        <form
+          onSubmit={handleSignup}
+          className="signup-form"
+        >
 
+          {/* Name */}
           <div className="input-group">
+
             <label>Full Name</label>
 
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
+            <div className="input-wrapper">
+              <span>👤</span>
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter your full name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
           </div>
 
+          {/* Email */}
           <div className="input-group">
+
             <label>Email Address</label>
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+            <div className="input-wrapper">
+              <span>✉</span>
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
           </div>
 
+          {/* Password */}
           <div className="input-group">
+
             <label>Password</label>
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Create a password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className="input-wrapper">
+              <span>🔒</span>
+
+              <input
+                type="password"
+                name="password"
+                placeholder="Create a password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
           </div>
 
-          <button type="submit" className="signup-btn">
+          {/* Button */}
+          <button
+            type="submit"
+            className="signup-btn"
+          >
             Create Account
+            <span>→</span>
           </button>
 
         </form>
 
+        {/* Login */}
         <p className="login-text">
           Already have an account?
-          <a href="/login"> Login</a>
+
+          <Link to="/login">
+            Login
+          </Link>
         </p>
 
       </div>

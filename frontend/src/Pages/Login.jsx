@@ -53,40 +53,77 @@ function Login() {
 
   return (
     <div className="login-page">
+
       <div className="login-card">
 
+        {/* Header */}
         <div className="login-header">
+
+          <div className="login-icon">
+            🛍️
+          </div>
+
+          <span className="login-label">
+            MINI STORE
+          </span>
+
           <h1>Welcome Back</h1>
-          <p>Login to continue shopping</p>
+
+          <p>
+            Login to your account and continue shopping.
+          </p>
+
         </div>
 
-        <form onSubmit={handleLogin} className="login-form">
+        <form
+          onSubmit={handleLogin}
+          className="login-form"
+        >
 
           {/* Login Type */}
           <div className="login-type">
+
             <p>Login as</p>
 
             <div className="login-type-options">
 
-              <label>
+              <label
+                className={
+                  loginAs === "user"
+                    ? "active"
+                    : ""
+                }
+              >
                 <input
                   type="radio"
                   name="loginAs"
                   value="user"
                   checked={loginAs === "user"}
-                  onChange={(e) => setLoginAs(e.target.value)}
+                  onChange={(e) =>
+                    setLoginAs(e.target.value)
+                  }
                 />
+
                 <span>👤 User</span>
               </label>
 
-              <label>
+              <label
+                className={
+                  loginAs === "admin"
+                    ? "active"
+                    : ""
+                }
+              >
                 <input
                   type="radio"
                   name="loginAs"
                   value="admin"
                   checked={loginAs === "admin"}
-                  onChange={(e) => setLoginAs(e.target.value)}
+                  onChange={(e) =>
+                    setLoginAs(e.target.value)
+                  }
                 />
+
                 <span>👑 Admin</span>
               </label>
 
@@ -95,103 +132,157 @@ function Login() {
 
           {/* Email */}
           <div className="input-group">
-            <label>Email</label>
 
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <label>Email Address</label>
+
+            <div className="input-wrapper">
+              <span>✉</span>
+
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
+                required
+              />
+            </div>
+
           </div>
 
           {/* Password */}
           <div className="input-group">
+
             <label>Password</label>
 
-            <input
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="input-wrapper">
+              <span>🔒</span>
+
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
+                required
+              />
+            </div>
+
           </div>
 
+          {/* Forgot Password */}
           <div className="forgot-password">
+
             <button
               type="button"
-              onClick={() => navigate("/forgot-password")}
+              onClick={() =>
+                navigate("/forgot-password")
+              }
             >
               Forgot Password?
             </button>
+
           </div>
 
-          <button type="submit" className="login-btn">
-            Login as {loginAs === "admin" ? "Admin" : "User"}
+          {/* Login */}
+          <button
+            type="submit"
+            className="login-btn"
+          >
+            Login as{" "}
+            {loginAs === "admin"
+              ? "Admin"
+              : "User"}
+
+            <span>→</span>
           </button>
 
         </form>
 
+        {/* Divider */}
         <div className="divider">
-          <span>OR</span>
+          <span>OR CONTINUE WITH</span>
         </div>
 
         {/* Google Login */}
         <div className="google-login">
+
           <GoogleLogin
-  onSuccess={async (credentialResponse) => {
-    try {
-      const response = await fetch(`${API_URL}/auth/google`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          credential: credentialResponse.credential,
-          loginAs
-        })
-      });
+            onSuccess={async (credentialResponse) => {
+              try {
+                const response = await fetch(
+                  `${API_URL}/auth/google`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                      credential:
+                        credentialResponse.credential,
+                      loginAs
+                    })
+                  }
+                );
 
-      const data = await response.json();
+                const data = await response.json();
 
-      if (!response.ok) {
-        alert(data.message);
-        return;
-      }
+                if (!response.ok) {
+                  alert(data.message);
+                  return;
+                }
 
-      localStorage.setItem("accessToken",data.accessToken);
-      localStorage.setItem("role", data.user.role);
+                localStorage.setItem(
+                  "accessToken",
+                  data.accessToken
+                );
 
-      alert("Google login successful!");
+                localStorage.setItem(
+                  "role",
+                  data.user.role
+                );
 
-      if (data.user.role === "admin") {
-        navigate("/admin/products");
-      } else {
-        navigate("/products");
-      }
+                alert("Google login successful!");
 
-    } catch (error) {
-      console.log("Google login error:", error);
-    }
-  }}
+                if (data.user.role === "admin") {
+                  navigate("/admin/products");
+                } else {
+                  navigate("/products");
+                }
 
-  onError={() => {
-    console.log("Google Login Failed");
-  }}
-/>
+              } catch (error) {
+                console.log(
+                  "Google login error:",
+                  error
+                );
+              }
+            }}
+
+            onError={() => {
+              console.log("Google Login Failed");
+            }}
+          />
+
         </div>
 
+        {/* Signup */}
         <p className="signup-text">
           Don't have an account?{" "}
-          <button onClick={() => navigate("/signup")}>
+
+          <button
+            onClick={() =>
+              navigate("/signup")
+            }
+          >
             Sign Up
           </button>
         </p>
 
       </div>
+
     </div>
   );
 }

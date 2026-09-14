@@ -27,6 +27,7 @@ function Cart() {
     fetchCart();
   }, []);
 
+
   const handleRemove = async (productId) => {
     try {
       const response = await apiFetch(
@@ -50,41 +51,99 @@ function Cart() {
     }
   };
 
+
   if (!cart) {
-    return <p>Loading cart...</p>;
+    return (
+      <div className="cart-loading">
+        <p>Loading your cart...</p>
+      </div>
+    );
   }
+
+
+  const totalItems = cart.products.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
+  const grandTotal = cart.products.reduce(
+    (total, item) =>
+      total + item.product.price * item.quantity,
+    0
+  );
+
 
   return (
     <div className="cart-page">
-      <h1>My Cart 🛒</h1>
+
+      {/* PAGE HEADER */}
+      <div className="cart-header">
+        <span>YOUR SHOPPING CART</span>
+        <h1>My Cart 🛒</h1>
+        <p>
+          Review your selected products before checkout.
+        </p>
+      </div>
+
 
       {cart.products.length === 0 ? (
+
+        /* EMPTY CART */
         <div className="empty-cart">
-          <h2>Your cart is empty</h2>
-          <p>Add some products to your cart.</p>
+
+          <div className="empty-cart-icon">
+            🛒
+          </div>
+
+          <h2>Your Cart is Empty</h2>
+
+          <p>
+            Looks like you haven't added anything to your
+            cart yet.
+          </p>
+
+          <button
+            className="continue-shopping-btn"
+            onClick={() =>
+              window.location.href = "/products"
+            }
+          >
+            Continue Shopping →
+          </button>
+
         </div>
+
       ) : (
-        <>
+
+        <div className="cart-layout">
+
+          {/* CART ITEMS */}
           <div className="cart-items">
 
             {cart.products.map((item) => (
+
               <div
                 className="cart-item"
                 key={item.product._id}
               >
 
-                <img
-                  src={item.product.image}
-                  alt={item.product.name}
-                />
+                <div className="cart-image">
+                  <img
+                    src={item.product.image}
+                    alt={item.product.name}
+                  />
+                </div>
+
 
                 <div className="cart-item-info">
 
-                  <h3>{item.product.name}</h3>
+                  <span className="cart-category">
+                    {item.product.category}
+                  </span>
 
-                  <p>
-                    Category: {item.product.category}
-                  </p>
+                  <h3>
+                    {item.product.name}
+                  </h3>
 
                   <p>
                     Price: ₹{item.product.price}
@@ -95,10 +154,11 @@ function Cart() {
                   </p>
 
                   <strong>
-                    Total: ₹{item.product.price * item.quantity}
+                    ₹{item.product.price * item.quantity}
                   </strong>
 
                 </div>
+
 
                 <button
                   className="remove-btn"
@@ -110,38 +170,46 @@ function Cart() {
                 </button>
 
               </div>
+
             ))}
 
           </div>
 
+
+          {/* ORDER SUMMARY */}
           <div className="cart-summary">
+
+            <span className="summary-label">
+              ORDER SUMMARY
+            </span>
 
             <h2>Order Summary</h2>
 
-            <p>
-              Total Items:{" "}
-              {cart.products.reduce(
-                (total, item) => total + item.quantity,
-                0
-              )}
-            </p>
+            <div className="summary-row">
+              <span>Total Items</span>
+              <span>{totalItems}</span>
+            </div>
 
-            <h2>
-              Grand Total: ₹
-              {cart.products.reduce(
-                (total, item) =>
-                  total +
-                  item.product.price * item.quantity,
-                0
-              )}
-            </h2>
+            <div className="summary-row">
+              <span>Subtotal</span>
+              <span>₹{grandTotal}</span>
+            </div>
+
+            <div className="summary-divider"></div>
+
+            <div className="summary-total">
+              <span>Grand Total</span>
+              <strong>₹{grandTotal}</strong>
+            </div>
 
             <button className="checkout-btn">
-              Proceed to Checkout
+              Proceed to Checkout →
             </button>
 
           </div>
-        </>
+
+        </div>
+
       )}
     </div>
   );

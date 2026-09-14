@@ -15,6 +15,7 @@ function AdminProducts() {
 
   const [editingId, setEditingId] = useState(null);
 
+
   // GET PRODUCTS
   const fetchProducts = async () => {
     try {
@@ -29,9 +30,11 @@ function AdminProducts() {
     }
   };
 
+
   useEffect(() => {
     fetchProducts();
   }, []);
+
 
   // INPUT CHANGE
   const handleChange = (e) => {
@@ -40,6 +43,7 @@ function AdminProducts() {
       [e.target.name]: e.target.value
     });
   };
+
 
   // CREATE / UPDATE
   const handleSubmit = async (e) => {
@@ -56,10 +60,12 @@ function AdminProducts() {
 
       const response = await fetch(url, {
         method,
+
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
+
         body: JSON.stringify({
           ...formData,
           price: Number(formData.price)
@@ -79,15 +85,7 @@ function AdminProducts() {
           : "Product created successfully"
       );
 
-      setFormData({
-        name: "",
-        price: "",
-        category: "",
-        image: "",
-        description: ""
-      });
-
-      setEditingId(null);
+      resetForm();
 
       fetchProducts();
 
@@ -95,6 +93,21 @@ function AdminProducts() {
       console.log("Error:", error);
     }
   };
+
+
+  // RESET FORM
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      price: "",
+      category: "",
+      image: "",
+      description: ""
+    });
+
+    setEditingId(null);
+  };
+
 
   // EDIT
   const handleEdit = (product) => {
@@ -107,7 +120,13 @@ function AdminProducts() {
       image: product.image,
       description: product.description
     });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   };
+
 
   // DELETE
   const handleDelete = async (id) => {
@@ -118,6 +137,7 @@ function AdminProducts() {
         `${API_URL}/products/${id}`,
         {
           method: "DELETE",
+
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -140,155 +160,280 @@ function AdminProducts() {
     }
   };
 
+
   return (
-  <div className="admin-page">
+    <div className="admin-page">
 
-    <h1>Admin Product Management</h1>
+      {/* HEADER */}
+      <div className="admin-header">
+        <span>ADMIN PANEL</span>
 
-    {/* Create / Edit Form */}
-    <div className="admin-form-card">
+        <h1>Product Management</h1>
 
-      <h2>
-        {editingId ? "Edit Product" : "Add New Product"}
-      </h2>
+        <p>
+          Create, update and manage your store products.
+        </p>
+      </div>
 
-      <form onSubmit={handleSubmit}>
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Product name"
-          value={formData.name}
-          onChange={handleChange}
-        />
+      {/* CREATE / EDIT FORM */}
+      <div className="admin-form-card">
 
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={handleChange}
-        />
+        <div className="form-heading">
+          <span className="form-label">
+            {editingId ? "UPDATE PRODUCT" : "PRODUCT MANAGEMENT"}
+          </span>
 
-        <select
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-        >
-          <option value="">Select Category</option>
-          <option value="electronics">Electronics</option>
-          <option value="clothing">Clothing</option>
-          <option value="shoes">Shoes</option>
-        </select>
+          <h2>
+            {editingId
+              ? "Edit Product"
+              : "Add New Product"}
+          </h2>
 
-        <input
-          type="text"
-          name="image"
-          placeholder="Image URL"
-          value={formData.image}
-          onChange={handleChange}
-        />
+          <p>
+            {editingId
+              ? "Update the product information below."
+              : "Enter the details to add a new product."}
+          </p>
+        </div>
 
-        <textarea
-          name="description"
-          placeholder="Product description"
-          value={formData.description}
-          onChange={handleChange}
-        />
 
-        <div className="form-buttons">
+        <form onSubmit={handleSubmit}>
 
-          <button type="submit" className="save-btn">
-            {editingId ? "Update Product" : "Create Product"}
-          </button>
+          <div className="form-group">
+            <label>Product Name</label>
 
-          {editingId && (
-            <button
-              type="button"
-              className="cancel-btn"
-              onClick={() => {
-                setEditingId(null);
-                setFormData({
-                  name: "",
-                  price: "",
-                  category: "",
-                  image: "",
-                  description: ""
-                });
-              }}
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter product name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+
+          <div className="form-group">
+            <label>Price</label>
+
+            <input
+              type="number"
+              name="price"
+              placeholder="Enter price"
+              value={formData.price}
+              onChange={handleChange}
+              min="0"
+              required
+            />
+          </div>
+
+
+          <div className="form-group">
+            <label>Category</label>
+
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
             >
-              Cancel
+              <option value="">
+                Select Category
+              </option>
+
+              <option value="Electronics">
+                Electronics
+              </option>
+
+              <option value="Clothing">
+                Clothing
+              </option>
+
+              <option value="Shoes">
+                Shoes
+              </option>
+
+              <option value="Groceries">
+                Groceries
+              </option>
+
+              <option value="Home Decor">
+                Home Decor
+              </option>
+
+              <option value="Makeup">
+                Makeup
+              </option>
+
+              <option value="Furniture">
+                Furniture
+              </option>
+
+              <option value="Perfumes">
+                Perfumes
+              </option>
+
+              <option value="Kitchen Appliances">
+                Kitchen Appliances
+              </option>
+
+              <option value="Watches">
+                Watches
+              </option>
+            </select>
+          </div>
+
+
+          <div className="form-group">
+            <label>Image URL</label>
+
+            <input
+              type="text"
+              name="image"
+              placeholder="Paste product image URL"
+              value={formData.image}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+
+          <div className="form-group full-width">
+            <label>Description</label>
+
+            <textarea
+              name="description"
+              placeholder="Enter product description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+
+          <div className="form-buttons">
+
+            <button
+              type="submit"
+              className="save-btn"
+            >
+              {editingId
+                ? "Update Product"
+                : "Create Product"}
             </button>
-          )}
+
+
+            {editingId && (
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={resetForm}
+              >
+                Cancel
+              </button>
+            )}
+
+          </div>
+
+        </form>
+
+      </div>
+
+
+      {/* PRODUCT LIST */}
+      <div className="admin-products">
+
+        <div className="products-heading">
+
+          <div>
+            <span>STORE INVENTORY</span>
+
+            <h2>Products</h2>
+          </div>
+
+          <p>
+            {products.length}{" "}
+            {products.length === 1
+              ? "product"
+              : "products"}
+          </p>
 
         </div>
 
-      </form>
-    </div>
+
+        <div className="admin-product-grid">
+
+          {products.map((product) => (
+
+            <div
+              className="admin-product-card"
+              key={product._id}
+            >
+
+              <div className="admin-product-image">
+
+                <img
+                  src={product.image}
+                  alt={product.name}
+                />
+
+                <span>
+                  {product.category}
+                </span>
+
+              </div>
 
 
-    {/* Product List */}
-    <div className="admin-products">
+              <div className="admin-product-info">
 
-      <h2>Products</h2>
+                <h3>
+                  {product.name}
+                </h3>
 
-      <div className="admin-product-grid">
+                <p className="admin-price">
+                  ₹{product.price}
+                </p>
 
-        {products.map((product) => (
+                <p className="admin-description">
+                  {product.description}
+                </p>
 
-          <div className="admin-product-card" key={product._id}>
 
-            <img
-              src={product.image}
-              alt={product.name}
-            />
+                <div className="admin-actions">
 
-            <div className="admin-product-info">
+                  <button
+                    className="edit-btn"
+                    onClick={() =>
+                      handleEdit(product)
+                    }
+                  >
+                    ✏️ Edit
+                  </button>
 
-              <h3>{product.name}</h3>
+                  <button
+                    className="delete-btn"
+                    onClick={() =>
+                      handleDelete(product._id)
+                    }
+                  >
+                    🗑️ Delete
+                  </button>
 
-              <p className="admin-category">
-                {product.category}
-              </p>
-
-              <p className="admin-price">
-                ₹{product.price}
-              </p>
-
-              <p className="admin-description">
-                {product.description}
-              </p>
-
-              <div className="admin-actions">
-
-                <button
-                  className="edit-btn"
-                  onClick={() => handleEdit(product)}
-                >
-                  Edit
-                </button>
-
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDelete(product._id)}
-                >
-                  Delete
-                </button>
+                </div>
 
               </div>
 
             </div>
 
-          </div>
+          ))}
 
-        ))}
+        </div>
 
       </div>
 
     </div>
-
-  </div>
-);
+  );
 }
 
 export default AdminProducts;

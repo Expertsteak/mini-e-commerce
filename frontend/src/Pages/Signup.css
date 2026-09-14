@@ -3,7 +3,7 @@
 ========================= */
 
 .signup-page {
-  min-height: calc(100vh - 72px);
+  min-height: calc(100vh - 80px);
 
   display: flex;
   justify-content: center;
@@ -11,29 +11,54 @@
 
   padding: 50px 20px;
 
-  background: #f5f7ff;
+  background: #f5f7fa;
 
   box-sizing: border-box;
 }
 
 
 /* =========================
-   SIGNUP CARD
+   CARD
 ========================= */
 
 .signup-card {
   width: 100%;
-  max-width: 430px;
+  max-width: 450px;
 
   padding: 42px;
 
   background: #ffffff;
 
-  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
 
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 15px 45px rgba(11, 31, 51, 0.09);
 
   box-sizing: border-box;
+
+  position: relative;
+}
+
+
+/* Gold Top Line */
+
+.signup-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 50%;
+
+  width: 70px;
+  height: 4px;
+
+  transform: translateX(-50%);
+
+  background: #d4a72c;
+
+  border-radius: 0 0 5px 5px;
 }
 
 
@@ -44,23 +69,59 @@
 .signup-header {
   text-align: center;
 
-  margin-bottom: 32px;
+  margin-bottom: 28px;
+}
+
+.signup-icon {
+  width: 64px;
+  height: 64px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #0b1f33;
+
+  border-radius: 50%;
+
+  font-size: 26px;
+
+  box-shadow:
+    0 8px 22px rgba(11, 31, 51, 0.18);
+}
+
+.signup-label {
+  display: inline-block;
+
+  margin-bottom: 9px;
+
+  color: #b58a16;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
 }
 
 .signup-header h1 {
   margin: 0 0 10px;
 
+  color: #0b1f33;
+
   font-size: 29px;
+  font-weight: 800;
 
-  color: #111827;
-
-  letter-spacing: -0.5px;
+  line-height: 1.2;
 }
 
 .signup-header p {
-  margin: 0;
+  margin: 0 auto;
 
-  color: #6b7280;
+  max-width: 350px;
+
+  color: #64748b;
 
   font-size: 14px;
 
@@ -76,8 +137,13 @@
   display: flex;
   flex-direction: column;
 
-  gap: 20px;
+  gap: 19px;
 }
+
+
+/* =========================
+   INPUT GROUP
+========================= */
 
 .input-group {
   display: flex;
@@ -87,39 +153,67 @@
 }
 
 .input-group label {
-  font-size: 14px;
+  color: #0b1f33;
 
-  font-weight: 600;
-
-  color: #374151;
+  font-size: 13px;
+  font-weight: 750;
 }
 
-.input-group input {
-  width: 100%;
 
-  padding: 13px 14px;
+/* =========================
+   INPUT
+========================= */
 
-  border: 1px solid #d1d5db;
+.input-wrapper {
+  position: relative;
 
-  border-radius: 9px;
+  display: flex;
+  align-items: center;
+}
 
-  outline: none;
+.input-wrapper > span {
+  position: absolute;
+
+  left: 15px;
 
   font-size: 14px;
+
+  pointer-events: none;
+}
+
+.input-wrapper input {
+  width: 100%;
+
+  padding: 13px 15px 13px 43px;
 
   box-sizing: border-box;
 
-  transition: 0.2s ease;
+  border: 1px solid #d8e0e8;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #0b1f33;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.input-group input::placeholder {
-  color: #9ca3af;
+.input-wrapper input::placeholder {
+  color: #94a3b8;
 }
 
-.input-group input:focus {
-  border-color: #4f46e5;
+.input-wrapper input:focus {
+  border-color: #d4a72c;
 
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  box-shadow:
+    0 0 0 3px rgba(212, 167, 44, 0.12);
 }
 
 
@@ -130,31 +224,65 @@
 .signup-btn {
   width: 100%;
 
-  padding: 13px;
+  margin-top: 3px;
 
-  border: none;
+  padding: 13px 18px;
 
-  border-radius: 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  background: #4f46e5;
+  gap: 10px;
 
-  color: white;
+  border: 1px solid #0b1f33;
 
-  font-size: 15px;
+  border-radius: 8px;
 
-  font-weight: 700;
+  background: #0b1f33;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 750;
 
   cursor: pointer;
 
-  transition: 0.25s ease;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.signup-btn span {
+  color: #d4a72c;
+
+  font-size: 17px;
+
+  transition: transform 0.25s ease;
 }
 
 .signup-btn:hover {
-  background: #4338ca;
+  background: #d4a72c;
+
+  border-color: #d4a72c;
+
+  color: #071522;
+
+  box-shadow:
+    0 8px 20px rgba(212, 167, 44, 0.2);
 
   transform: translateY(-2px);
+}
 
-  box-shadow: 0 7px 18px rgba(79, 70, 229, 0.25);
+.signup-btn:hover span {
+  color: #071522;
+
+  transform: translateX(3px);
+}
+
+.signup-btn:active {
+  transform: translateY(0);
 }
 
 
@@ -163,26 +291,35 @@
 ========================= */
 
 .login-text {
-  margin: 28px 0 0;
+  margin: 25px 0 0;
+
+  padding-top: 20px;
+
+  border-top: 1px solid #edf0f3;
 
   text-align: center;
 
-  color: #6b7280;
+  color: #64748b;
 
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .login-text a {
   margin-left: 5px;
 
-  color: #4f46e5;
+  color: #b58a16;
 
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 750;
 
   text-decoration: none;
+
+  transition: color 0.2s ease;
 }
 
 .login-text a:hover {
+  color: #d4a72c;
+
   text-decoration: underline;
 }
 
@@ -194,16 +331,21 @@
 @media (max-width: 500px) {
 
   .signup-page {
-    padding: 30px 15px;
+    padding: 35px 16px;
   }
 
   .signup-card {
-    padding: 30px 22px;
+    padding: 36px 24px;
+  }
 
-    border-radius: 14px;
+  .signup-icon {
+    width: 58px;
+    height: 58px;
+
+    font-size: 24px;
   }
 
   .signup-header h1 {
-    font-size: 25px;
+    font-size: 26px;
   }
 }
