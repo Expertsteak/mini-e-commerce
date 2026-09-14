@@ -22,50 +22,112 @@ function Home() {
   return (
     <div className="home">
 
-      {/* HERO SECTION */}
-      <section className="hero">
-        <div className="hero-content">
+{/* HERO SECTION */}
 
-          <span className="hero-tag">
-            ✨ Your Everyday Shopping Destination
-          </span>
+<section className="hero">
 
-          <h1>
-            Welcome to <span>Mini Store</span>
-          </h1>
+  <div className="hero-content">
 
-          <p>
-            Discover amazing products, great prices,
-            and a simple shopping experience.
-          </p>
+    <span className="hero-tag">
+      ✦ PREMIUM ONLINE SHOPPING
+    </span>
 
-          <div className="hero-buttons">
+    <h1>
+      Everything You Need.
+      <span> All in One Place.</span>
+    </h1>
 
-            <button
-              className="primary-btn"
-              onClick={() => navigate("/products")}
-            >
-              Shop Now →
-            </button>
+    <p>
+      Discover quality products, explore great deals,
+      and enjoy a simple shopping experience with Mini Store.
+    </p>
 
-            <button
-              className="secondary-btn"
-              onClick={() => navigate("/login")}
-            >
-              Login
-            </button>
+    <div className="hero-buttons">
 
-            <button
-              className="signup-btn"
-              onClick={() => navigate("/signup")}
-            >
-              Sign Up
-            </button>
+      <button
+        className="primary-btn"
+        onClick={() => navigate("/products")}
+      >
+        Shop Now →
+      </button>
 
-          </div>
+      <button
+        className="secondary-btn"
+        onClick={() => navigate("/products")}
+      >
+        Explore Products
+      </button>
 
-        </div>
-      </section>
+    </div>
+
+    <div className="hero-stats">
+
+      <div>
+        <strong>100+</strong>
+        <span>Products</span>
+      </div>
+
+      <div>
+        <strong>10</strong>
+        <span>Categories</span>
+      </div>
+
+      <div>
+        <strong>24/7</strong>
+        <span>Shopping</span>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  {/* HERO VISUAL */}
+
+  <div className="hero-visual">
+
+    <div className="visual-circle"></div>
+
+    <div className="shopping-card">
+
+      <div className="shopping-icon">
+        🛍️
+      </div>
+
+      <div className="shopping-text">
+        <span>MINI STORE</span>
+        <strong>SHOP SMART</strong>
+      </div>
+
+    </div>
+
+
+    <div className="floating-card card-one">
+      <span>⚡</span>
+      <div>
+        <strong>Great Deals</strong>
+        <small>Everyday</small>
+      </div>
+    </div>
+
+
+    <div className="floating-card card-two">
+      <span>🛒</span>
+      <div>
+        <strong>Easy Shopping</strong>
+        <small>Quick & Simple</small>
+      </div>
+    </div>
+
+
+    <div className="gold-dot dot-one"></div>
+    <div className="gold-dot dot-two"></div>
+
+  </div>
+
+</section>
+
+
 
 
       {/* FEATURED PRODUCTS */}
