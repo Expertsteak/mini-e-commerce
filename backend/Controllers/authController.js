@@ -19,6 +19,14 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+transporter.verify((error) => {
+  if (error) {
+    console.log("EMAIL CONFIG ERROR:", error.message);
+  } else {
+    console.log("EMAIL SERVER READY");
+  }
+});
+
 
 // =========================
 // SIGNUP
@@ -173,7 +181,7 @@ export const login = async (req, res) => {
 
 export const refreshAccessToken = (req, res) => {
   try {
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken = req.cookies.Refresh_Token;
 
     if (!refreshToken) {
       return res.status(401).json({
@@ -216,6 +224,12 @@ export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
 
+    if (!email) {
+      return res.status(400).json({
+        message: "Email is required"
+      });
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -240,49 +254,51 @@ export const forgotPassword = async (req, res) => {
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Reset Your Password",
+      to: user.email,
+      subject: "Reset Your Password - Mini Store",
       html: `
-        <h2>Password Reset</h2>
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
+          <h2>Password Reset</h2>
 
-        <p>You requested to reset your password.</p>
+          <p>You requested to reset your Mini Store password.</p>
 
-        <p>Click the button below to create a new password:</p>
+          <p>Click the button below to create a new password:</p>
 
-        <a
-          href="${resetLink}"
-          style="
-            display:inline-block;
-            padding:10px 20px;
-            background:#000;
-            color:#fff;
-            text-decoration:none;
-            border-radius:5px;
-          "
-        >
-          Reset Password
-        </a>
+          <a
+            href="${resetLink}"
+            style="
+              display:inline-block;
+              padding:12px 22px;
+              background:#0B1F33;
+              color:white;
+              text-decoration:none;
+              border-radius:6px;
+            "
+          >
+            Reset Password
+          </a>
 
-        <p>This link will expire in 15 minutes.</p>
+          <p style="margin-top:20px;">
+            This link will expire in 15 minutes.
+          </p>
 
-        <p>
-          If you didn't request this, you can ignore this email.
-        </p>
+          <p>
+            If you didn't request this, you can safely ignore this email.
+          </p>
+        </div>
       `
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Password reset link sent to your email"
     });
 
   } catch (error) {
-    console.log(
-      "FORGOT PASSWORD ERROR:",
-      error
-    );
 
-    res.status(500).json({
-      message: "Failed to process request",
+    console.error("FORGOT PASSWORD ERROR:", error);
+
+    return res.status(500).json({
+      message: "Failed to send reset email",
       error: error.message
     });
   }

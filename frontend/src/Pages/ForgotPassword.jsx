@@ -23,11 +23,16 @@ function ForgotPassword() {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        alert(data.message);
-        return;
-      }
-
+      // if (!response.ok) {
+      //   alert(data.message);
+      //   return;
+      // }
+if (!response.ok) {
+  alert(
+    `${data.message}\n\n${data.error || "No additional error"}`
+  );
+  return;
+}
       alert(data.message);
 
     } catch (error) {
