@@ -290,4 +290,15 @@
   }
 
 }
+@media (max-width: 768px) {
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .logo span {
+    font-size: 18px;
+  }
+
+}
 
