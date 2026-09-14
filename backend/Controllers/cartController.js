@@ -1,10 +1,20 @@
 import Cart from "../Models/Cart.js";
+import Product from "../Models/Product.js";
 
 // ADD TO CART
 export const addToCart = async (req, res) => {
   try {
     const { productId, quantity = 1 } = req.body;
     const userId = req.user.userId;
+
+    // Check if product exists
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found"
+      });
+    }
 
     let cart = await Cart.findOne({ user: userId });
 
@@ -25,6 +35,11 @@ export const addToCart = async (req, res) => {
         cart
       });
     }
+
+    // Remove any old products that no longer exist
+    cart.products = cart.products.filter(
+      (item) => item.product !== null
+    );
 
     // Check if product already exists in cart
     const existingProduct = cart.products.find(
@@ -71,6 +86,13 @@ export const getCart = async (req, res) => {
       });
     }
 
+    // Remove products that no longer exist
+    cart.products = cart.products.filter(
+      (item) => item.product !== null
+    );
+
+    await cart.save();
+
     res.status(200).json(cart);
 
   } catch (error) {
@@ -102,9 +124,13 @@ export const removeFromCart = async (req, res) => {
 
     await cart.save();
 
+    // Return updated cart with product details
+    const updatedCart = await Cart.findOne({ user: userId })
+      .populate("products.product");
+
     res.status(200).json({
       message: "Product removed from cart",
-      cart
+      cart: updatedCart
     });
 
   } catch (error) {
